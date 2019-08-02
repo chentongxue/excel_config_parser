@@ -1,0 +1,11 @@
+.idea/
+test/
+build/
+dist/
+*.exe
+config.local
+env/
+json/
+*.bat
+*.spec
+*.py[co]
