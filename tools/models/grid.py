@@ -2,6 +2,7 @@
 import string
 import json
 from tools import const
+from tools.models import validator
 
 
 class Grid(object):
@@ -85,3 +86,9 @@ class Grid(object):
             n = (n - k) / 26
         grid = ''.join(arr) + str(self.row_num + 1)
         return grid
+
+    def validate(self):
+        if self.raw_value is None:
+            return
+        validate = validator.Validator(self.raw_data_type, self.raw_value)
+        validate.validate()
