@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace SKS.Model
 {
     /// <summary> ##EXCEL_FILENAME## </summary>
-    public class ##SHEET_NAME##
+    public class ##SHEET_NAME##:ConfigBase
     {
         public class Record
         {
@@ -21,7 +21,7 @@ namespace SKS.Model
         public Dictionary<int, Record> map = new Dictionary<int, Record>();
         public List<Record> list = new List<Record>();
 
-        public void Decode(StreamTool st)
+        public override void Decode(StreamTool st)
         {
             var In = st.In;
             map.Clear();
