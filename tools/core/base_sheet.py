@@ -16,6 +16,14 @@ class BaseSheet(object):
         self.scopes = []
         self.raw_data_types = []
 
+    @property
+    def primary_keys(self):
+        """
+        获取所有主键
+        :return:
+        """
+        return [x[0].value for x in self.grid_list]
+
     def __repr__(self):
         return '<Sheet: %s>' % self.name
 

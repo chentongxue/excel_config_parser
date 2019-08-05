@@ -23,6 +23,12 @@ def yield_excel_path():
         yield path
 
 
+def has_error():
+    with open(config['ERROR_FILE_PATH']) as f:
+        if f.read():
+            return True
+
+
 @click.group()
 def commands():
     pass
@@ -30,14 +36,22 @@ def commands():
 
 @commands.command()
 def export_json():
+    if has_error():
+        return
+    print u'开始执行导出JSON'
     for path in yield_excel_path():
+        print u'导出JSON，正在处理:', path
         obj = ExcelToJson(path, config['JSON_FOLDER'])
         obj.export_data()
 
 
 @commands.command()
 def export_csharp():
+    if has_error():
+        return
+    print u'开始执行导出CSharp代码'
     for path in yield_excel_path():
+        print u'导出CSharp代码，正在处理:', path
         obj = ExcelToBinaryStream(path, config['BYTES_FOLDER'], config['CSHARP_CONFIG_FOLDER'])
         obj.export_data()
 
@@ -45,15 +59,21 @@ def export_csharp():
 @commands.command()
 def validate_excel():
     error_messages = []
+    print u'开始执行excel校验'
     for path in yield_excel_path():
+        print u'校验excel，正在处理', path
         obj = ExcelValidator(path)
         obj.run()
         error_messages.extend(obj.error_msgs)
 
-    if error_messages:
-        with open(config['ERROR_FILE_PATH'], 'w') as f:
-            print '\n'.join(error_messages)
-            f.write('\n'.join(error_messages).encode('utf-8'))
+    with open(config['ERROR_FILE_PATH'], 'w') as f:
+        print '\n'.join(error_messages)
+        f.write('\n'.join(error_messages).encode('utf-8'))
+
+        if error_messages:
+            tip = u'发生致命错误导致程序终止, 请检查错误日志文件 [%s]' % config['ERROR_FILE_PATH']
+            print tip
+            raw_input()
 
 
 if __name__ == '__main__':

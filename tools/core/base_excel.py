@@ -10,6 +10,9 @@ class BaseExcel(object):
 
     def parse_sheet(self):
         for sheet in self.excel.worksheets:
+            # 只处理 Cfg 结尾的sheet
+            if not sheet.title.endswith('Cfg'):
+                continue
             sheet_parser = BaseSheet(sheet)
             sheet_parser.handle()
             yield sheet_parser

@@ -88,7 +88,12 @@ class Grid(object):
         return grid
 
     def validate(self):
+        validate = validator.Validator(self.raw_data_type, self.raw_value)
+        # 第1列必须为int类型，且不能为空
+        if self.col_num == 0:
+            validate.validate_primary_key()
+            validate.validate()
+            return
         if self.raw_value is None:
             return
-        validate = validator.Validator(self.raw_data_type, self.raw_value)
         validate.validate()

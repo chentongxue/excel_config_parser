@@ -31,6 +31,13 @@ class ExcelValidator(BaseExcel):
                     except validator.ValidateDataTypeError:
                         tip = u'表头类型设置错误, [%s]' % grid.raw_data_type
                         self.add_error_msg(sheet_parser.name, tip)
+                    except validator.ValidatePrimaryKeyTypeError:
+                        tip = u'主键类型设置错误, [%s], 必须为 [int]' % grid.raw_data_type
+                        self.add_error_msg(sheet_parser.name, tip)
+
+            if len(set(sheet_parser.primary_keys)) != len(sheet_parser.primary_keys):
+                tip = u'存在重复主键'
+                self.add_error_msg(sheet_parser.name, tip)
 
 
 if __name__ == '__main__':

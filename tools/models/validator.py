@@ -11,6 +11,12 @@ class ValidateValueError(Exception):
     """单元格值错误"""
 
 
+class ValidatePrimaryKeyTypeError(Exception):
+    """
+    主键类型错误
+    """
+
+
 type_int = (int, long)
 type_float = (int, long, float)
 type_str = (str, unicode)
@@ -31,6 +37,15 @@ class Validator(object):
 
         func = getattr(self, '_validate_value_%s' % self.data_type)
         func()
+
+    def validate_primary_key(self):
+        """
+        校验是否Key
+        :return:
+        """
+        # 主键必须为int类型
+        if const.BASE_DATA_TYPES.get(self.data_type) != const.BASE_DATA_TYPES['int']:
+            raise ValidatePrimaryKeyTypeError
 
     def _validate_value_int(self):
         if type(self.value) not in type_int:
