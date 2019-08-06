@@ -26,5 +26,5 @@ SCOPE_ROW_NUM = 3        # 作用范围行号
 DATA_TYPE_ROW_NUM = 4    # 数据类型行号
 DATA_START_ROW_NUM = 5   # 数据开始行号
 
-SCOPE_SERVER = 'S'
-SCOPE_CLIENT = 'C'
+SCOPE_SERVER = 'S'  # 服务器
+SCOPE_CLIENT = 'C'  # 客户端

@@ -28,10 +28,18 @@ class Validator(object):
         self.value = value
 
     def validate_data_type(self):
+        """
+        校验数据类型是否合法
+        :return:
+        """
         if self.data_type not in const.BASE_DATA_TYPES:
             raise ValidateDataTypeError
 
     def validate_value(self):
+        """
+        校验值 根据类型调用具体校验方法 _validate_value_type
+        :return:
+        """
         if self.value is None:
             return
 
@@ -40,7 +48,8 @@ class Validator(object):
 
     def validate_primary_key(self):
         """
-        校验是否Key
+        校验主键是否合法
+        主键必须为int类型
         :return:
         """
         # 主键必须为int类型
@@ -59,6 +68,10 @@ class Validator(object):
         pass
 
     def _validate_arr(self):
+        """
+        校验数组是否合法
+        :return:
+        """
         try:
             arr = json.loads(self.value)
         except ValueError:
@@ -69,6 +82,11 @@ class Validator(object):
         return arr
 
     def _validate_arr_each_type(self, types):
+        """
+        校验数组每个元素
+        :param types:
+        :return:
+        """
         arr = self._validate_arr()
         for item in arr:
             if type(item) not in types:

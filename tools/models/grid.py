@@ -17,10 +17,10 @@ class Grid(object):
         :param value: 原始value
         :param description:  原始描述
         :param comment: 原始注释
-        :param scope:
-        :param data_type:
-        :param row_num:
-        :param col_num:
+        :param scope: 原始作用域
+        :param data_type: 原始数据类型
+        :param row_num: excel中的行号
+        :param col_num: excel中的列号
         """
         self.raw_key = key
         self.raw_value = value
@@ -40,6 +40,11 @@ class Grid(object):
 
     @property
     def value(self):
+        """
+        预处理原始值
+        对空值返回默认值
+        :return:
+        """
         if self.raw_value is None:
             if self.data_type == const.BASE_DATA_TYPES['int']:
                 return 0
@@ -73,10 +78,18 @@ class Grid(object):
 
     @property
     def data_type(self):
+        """
+        数据类型对应的int值
+        :return: int
+        """
         return const.BASE_DATA_TYPES[self.raw_data_type]
 
     @property
     def position(self):
+        """
+        计算实例的excel坐标
+        :return: str
+        """
         letters = string.letters[:26].upper()
         arr = []
         n = self.col_num + 1
@@ -88,6 +101,10 @@ class Grid(object):
         return grid
 
     def validate(self):
+        """
+        校验本单元格
+        :return:
+        """
         validate = validator.Validator(self.raw_data_type, self.raw_value)
         # 第1列必须为int类型，且不能为空
         if self.col_num == 0:
