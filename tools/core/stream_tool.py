@@ -9,7 +9,7 @@ class StreamTool(object):
 
     def write_int(self, data):
         self.fmt.append('i')
-        self.buffs.append(data)
+        self.buffs.append(int(data))
 
     def write_float(self, data):
         self.fmt.append('f')
@@ -30,9 +30,9 @@ class StreamTool(object):
         if array_len > 0:
             self.fmt.append('%si' % array_len)
 
-        self.buffs.append(array_len)
+        self.buffs.append(int(array_len))
         for item in data:
-            self.buffs.append(item)
+            self.buffs.append(int(item))
 
     def write_arrFloat(self, data):
         array_len = len(data)

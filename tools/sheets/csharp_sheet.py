@@ -38,7 +38,7 @@ class CSharpSheet(BaseSheet):
         binary_stream = self.make_bytes()
         filename = '%s.bytes' % self.name
         path = os.path.join(folder_path, filename)
-        with open(path, 'w') as f:
+        with open(path, 'wb') as f:
             f.write(binary_stream)
 
     def save_csharp(self, folder_path, excel_filename):

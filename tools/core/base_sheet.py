@@ -67,8 +67,11 @@ class BaseSheet(object):
         :return: list[int]
         """
         types = []
-        for data_type in self.raw_data_types:
-            types.append(const.BASE_DATA_TYPES[data_type])
+        for index, data_type in enumerate(self.raw_data_types):
+            if self.scopes[index] is None:
+                types.append(None)
+            else:
+                types.append(const.BASE_DATA_TYPES[data_type])
         return types
 
     def handle(self):
@@ -77,6 +80,7 @@ class BaseSheet(object):
         将所有数据单元格处理成 Grid 实例，以二维数组形式存入 self.grid_list 中
         :return:
         """
+        # TODO 处理表头时，行尾可能出现空格或 None 的情况
         self.descriptions = self.raw_values[const.DESCRIPTION_ROW_NUM]
         self.comments = self.raw_values[const.COMMENT_ROW_NUM]
         self.keys = self.raw_values[const.KEY_ROW_NUM]

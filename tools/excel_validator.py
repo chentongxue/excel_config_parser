@@ -9,18 +9,24 @@ class ExcelValidator(BaseExcel):
     def __init__(self, path):
         super(ExcelValidator, self).__init__(path)
         self.error_msgs = []
+        self.sheet_names = []
 
-    def add_error_msg(self, sheet_name, tip):
+    @property
+    def filename(self):
         filename = os.path.basename(self.path)
         try:
             filename = filename.decode('utf-8')
         except UnicodeDecodeError:
             filename = filename.decode('gb18030')
-        msg = u'%s [%s] %s' % (filename, sheet_name, tip)
+        return filename
+
+    def add_error_msg(self, sheet_name, tip):
+        msg = u'%s [%s] %s' % (self.filename, sheet_name, tip)
         self.error_msgs.append(msg)
 
     def run(self):
         for sheet_parser in self.parse_sheet():
+            self.sheet_names.append(sheet_parser.name)
             for row in sheet_parser.grid_list:
                 for grid in row:
                     try:
@@ -33,6 +39,9 @@ class ExcelValidator(BaseExcel):
                         self.add_error_msg(sheet_parser.name, tip)
                     except validator.ValidatePrimaryKeyTypeError:
                         tip = u'主键类型设置错误, [%s], 必须为 [int]' % grid.raw_data_type
+                        self.add_error_msg(sheet_parser.name, tip)
+                    except validator.ValidateKeyError:
+                        tip = u'Key 不能存在空格, [%s]' % grid.key
                         self.add_error_msg(sheet_parser.name, tip)
 
             if len(set(sheet_parser.primary_keys)) != len(sheet_parser.primary_keys):

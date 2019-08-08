@@ -45,8 +45,7 @@ class CSharpCode(object):
 
     def write_arr_int_decode(self, key):
         self.decode_codes.append(decode_indent + '%s.Clear();' % key)
-        s = decode_indent + """var n_arrInt = In.ReadInt32();
-                for (int i = 0, n = n_arrInt; i < n; ++i)
+        s = decode_indent + """for (int i = 0, n = In.ReadInt32(); i < n; ++i)
                 {
                     var a = In.ReadInt32();
                     %s.Add(a);
@@ -55,8 +54,7 @@ class CSharpCode(object):
 
     def write_arr_float_decode(self, key):
         self.decode_codes.append(decode_indent + '%s.Clear();' % key)
-        s = decode_indent + """var n_arrFloat = In.ReadInt32();
-                for (int i = 0, n = n_arrFloat; i < n; ++i)
+        s = decode_indent + """for (int i = 0, n = In.ReadInt32(); i < n; ++i)
                 {
                     %s.Add(In.ReadSingle());
                 }""" % key
@@ -64,8 +62,7 @@ class CSharpCode(object):
 
     def write_arr_str_decode(self, key):
         self.decode_codes.append(decode_indent + '%s.Clear();' % key)
-        s = decode_indent + """var n_arrStr = In.ReadInt32();
-                for (int i = 0, n = n_arrStr; i < n; ++i)
+        s = decode_indent + """for (int i = 0, n = In.ReadInt32(); i < n; ++i)
                 {
                     %s.Add(st.ReadAsciiString());
                 }""" % key
@@ -73,6 +70,9 @@ class CSharpCode(object):
 
     def make_code_array(self):
         for index, data_type in enumerate(self.data_types):
+            if data_type is None:
+                continue
+
             key = self.keys[index]
             self.key_defines.append(define_indent + '/// <summary> %s </summary>' % self.descriptions[index])
             if data_type == const.BASE_DATA_TYPES['int']:

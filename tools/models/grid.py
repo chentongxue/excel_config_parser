@@ -105,7 +105,7 @@ class Grid(object):
         校验本单元格
         :return:
         """
-        validate = validator.Validator(self.raw_data_type, self.raw_value)
+        validate = validator.Validator(self.raw_data_type, self.raw_value, self.raw_key)
         # 第1列必须为int类型，且不能为空
         if self.col_num == 0:
             validate.validate_primary_key()

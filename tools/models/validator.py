@@ -17,15 +17,22 @@ class ValidatePrimaryKeyTypeError(Exception):
     """
 
 
+class ValidateKeyError(Exception):
+    """
+    Key 错误
+    """
+
+
 type_int = (int, long)
 type_float = (int, long, float)
 type_str = (str, unicode)
 
 
 class Validator(object):
-    def __init__(self, data_type, value):
+    def __init__(self, data_type, value, key):
         self.data_type = data_type
         self.value = value
+        self.key = key
 
     def validate_data_type(self):
         """
@@ -34,6 +41,10 @@ class Validator(object):
         """
         if self.data_type not in const.BASE_DATA_TYPES:
             raise ValidateDataTypeError
+
+    def validate_key(self):
+        if ' ' in self.key:
+            raise ValidateKeyError
 
     def validate_value(self):
         """
@@ -102,5 +113,6 @@ class Validator(object):
         self._validate_arr_each_type(type_str)
 
     def validate(self):
+        self.validate_key()
         self.validate_data_type()
         self.validate_value()
