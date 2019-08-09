@@ -57,6 +57,10 @@ namespace SKS.Model
             {
                 Record ret = null;
                 map.TryGetValue(id, out ret);
+                if(null == ret)
+                {
+                    UnityEngine.Debug.LogError(string.Format("{0} sheet has not id:{1}", "##SHEET_NAME##", id));
+                }
                 return ret;
             }
         }//[]
